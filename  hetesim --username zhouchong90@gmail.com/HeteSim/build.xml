@@ -1,36 +1,62 @@
 <?xml version="1.0"?>
-<project name="FatJar HeteSim_fat.jar (experimental)" default="main" basedir=".">
-    <!-- this file was created by Fat-Jar Eclipse Plug-in -->
-    <!-- the ANT-Export is in a very early stage, so this -->
-    <!-- is only experimental, ANT 1.6 or above is        -->
-    <!-- required, feedback is always welcome:            -->
-    <!--       http://sourceforge.net/projects/fjep       -->
-    <!-- uncomment the following lines if using ANT outside Eclipse -->
-    <!--
-        <property name="fjepPath" value="reference:file:plugins/net.sf.fjep.fatjar_0.0.31.jarfatjar.jar"/>
-        <taskdef name="fatjar.build" classname="net.sf.fjep.anttask.FJBuildTask" classpath="${fjepPath}"/>
-        <typedef name="fatjar.manifest" classname="net.sf.fjep.anttask.FJManifestType" classpath="${fjepPath}"/>
-        <typedef name="fatjar.exclude" classname="net.sf.fjep.anttask.FJExcludeType" classpath="${fjepPath}"/>
-        <typedef name="fatjar.jarsource" classname="net.sf.fjep.anttask.FJJarSourceType" classpath="${fjepPath}"/>
-        <typedef name="fatjar.filesource" classname="net.sf.fjep.anttask.FJFileSourceType" classpath="${fjepPath}"/>
-    -->
-    <!-- uncomment the above lines to use ANT outside of Eclipse -->
-    <target name="main">
-        <fatjar.build output="HeteSim_fat.jar">
-            <fatjar.manifest mainclass="view.MainWindow"/>
-            <fatjar.filesource path="C:\Users\zhouchong90\Documents\ÎÒµÄ¼á¹ûÆÌ×Ó\ÊµÑéÊÒ\workspace\HeteSim\bin" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.osgi_3.7.1.R37x_v20110808-1106.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.core.commands_3.6.0.I20110111-0800.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.equinox.common_3.6.0.v20110523.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.core.runtime_3.7.0.v20110110.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.text_3.5.101.r371_v20110810-0800.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.swt.win32.win32.x86_3.7.1.v3738a.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.jface_3.7.0.I20110522-1430.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.jface.text_3.7.1.r371_v20110825-0800.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.ui.workbench_3.7.0.I20110519-0100.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\com.ibm.icu_4.4.2.v20110208.jar" relpath=""/>
-            <fatjar.jarsource file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.ui.forms_3.5.100.v20110425.jar" relpath=""/>
-        </fatjar.build>
-    </target>
+<project name="FatJar HeteSim_fat.jar (experimental)" default="main"
+	basedir=".">
+	<!-- this file was created by Fat-Jar Eclipse Plug-in -->
+	<!-- the ANT-Export is in a very early stage, so this -->
+	<!-- is only experimental, ANT 1.6 or above is -->
+	<!-- required, feedback is always welcome: -->
+	<!-- http://sourceforge.net/projects/fjep -->
+	<!-- uncomment the following lines if using ANT outside Eclipse -->
+	<!-- <property name="fjepPath" value="reference:file:plugins/net.sf.fjep.fatjar_0.0.31.jarfatjar.jar"/> 
+		<taskdef name="fatjar.build" classname="net.sf.fjep.anttask.FJBuildTask" 
+		classpath="${fjepPath}"/> <typedef name="fatjar.manifest" classname="net.sf.fjep.anttask.FJManifestType" 
+		classpath="${fjepPath}"/> <typedef name="fatjar.exclude" classname="net.sf.fjep.anttask.FJExcludeType" 
+		classpath="${fjepPath}"/> <typedef name="fatjar.jarsource" classname="net.sf.fjep.anttask.FJJarSourceType" 
+		classpath="${fjepPath}"/> <typedef name="fatjar.filesource" classname="net.sf.fjep.anttask.FJFileSourceType" 
+		classpath="${fjepPath}"/> -->
+	<!-- uncomment the above lines to use ANT outside of Eclipse -->
+	<target name="main">
+		<fatjar.build output="HeteSim_fat.jar">
+			<fatjar.manifest mainclass="view.MainWindow" />
+			<fatjar.filesource
+				path="C:\Users\zhouchong90\Documents\ï¿½ÒµÄ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\Êµï¿½ï¿½ï¿½ï¿½\workspace\HeteSim\bin"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.osgi_3.7.1.R37x_v20110808-1106.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.core.commands_3.6.0.I20110111-0800.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.equinox.common_3.6.0.v20110523.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.core.runtime_3.7.0.v20110110.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.text_3.5.101.r371_v20110810-0800.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.swt.win32.win32.x86_3.7.1.v3738a.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.jface_3.7.0.I20110522-1430.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.jface.text_3.7.1.r371_v20110825-0800.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.ui.workbench_3.7.0.I20110519-0100.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\com.ibm.icu_4.4.2.v20110208.jar"
+				relpath="" />
+			<fatjar.jarsource
+				file="C:\Program Files (x86)\eclipse\plugins\org.eclipse.ui.forms_3.5.100.v20110425.jar"
+				relpath="" />
+		</fatjar.build>
+	</target>
 </project>
