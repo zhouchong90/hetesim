@@ -47,8 +47,6 @@ import org.eclipse.swt.widgets.Combo;
 
 import calHeteSim.CalHeteSim;
 import calHeteSim.QuickHeteSim;
-import swing2swt.layout.BoxLayout;
-import swing2swt.layout.BorderLayout;
 import toolKit.PreCalculate;
 
 public class MainWindow
