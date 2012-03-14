@@ -60,7 +60,7 @@ public class PreCalculate {
 	}
 	
 	
-	private ArrayList<String> calPosiPath(int low,int high)
+	public ArrayList<String> calPosiPath(int low,int high)
 	{
 		ArrayList<String> posiPaths = new ArrayList<String>();
 		ArrayList<String> path = new ArrayList<String>();
@@ -74,7 +74,7 @@ public class PreCalculate {
 		return posiPaths;
 	}
 	
-	private ArrayList<String> calPosiPath(String start,String end, int low, int high)
+	public ArrayList<String> calPosiPath(String start,String end, int low, int high)
 	{
 		ArrayList<String> posiPaths = new ArrayList<String>();
 		ArrayList<String> path = new ArrayList<String>();

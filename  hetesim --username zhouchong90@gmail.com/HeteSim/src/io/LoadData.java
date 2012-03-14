@@ -142,6 +142,7 @@ public abstract class LoadData
 			
 			TransitiveMatrix newTransMat = new TransitiveMatrix(
 					relations.get(relationName));
+			newTransMat.setMatrixName(relationName);
 			newTransMat.calAvgDegrees();
 			
 			data.getTransMats().put(relationName, newTransMat);
@@ -151,6 +152,7 @@ public abstract class LoadData
 
 			TransitiveMatrix transposeMat = new TransitiveMatrix(relations.get(
 					relationName).transpose());
+			transposeMat.setMatrixName(transposeName);
 			transposeMat.calAvgDegrees();
 			
 			data.getTransMats().put(transposeName, transposeMat);

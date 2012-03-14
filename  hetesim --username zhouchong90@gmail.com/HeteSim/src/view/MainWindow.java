@@ -48,35 +48,37 @@ import org.eclipse.swt.widgets.Combo;
 import calHeteSim.CalHeteSim;
 import calHeteSim.QuickHeteSim;
 import toolKit.PreCalculate;
+import toolKit.WeightedTransMats;
 
 public class MainWindow
 {
-	private static Shell			shlHetesimdemo;
-	private static String			srcFilePath;
-	private static Composite		dataView;
-	private static List				entityList, relationList;
+	private static Shell shlHetesimdemo;
+	private static String srcFilePath;
+	private static Composite dataView;
+	private static List entityList, relationList;
 
-	private static Data				data;
-	private static PreCalculate		preCal;
+	private static Data data;
+	private static PreCalculate preCal;
 
-	private static TabFolder		tabFolder;
-	private static Text				proName;
-	private static StyledText		profileText;
-	private static Text				heteSimPath;
-	private static Text				keyWord;
-	private static Text				k;
-	private static TabItem			tbtmGenerateProfile;
-	private static TabItem			tbtmRelevenceSearch;
-	private static TabItem			tbtmRecommandationSearch;
-	private static List				resultList, resultList2;
-	private static Combo			combo;
-	private static Text				status;
-	private static ProfileTemplate	pt;
-	private static Button			btnUseTemplate;
-	private static Text				RStext;
-	private static Text				hetePath;
-	private static QuickHeteSim		qhs	= null;
-	private static Composite		compositeLeft, compositeRight;
+	private static TabFolder tabFolder;
+	private static Text proName;
+	private static StyledText profileText;
+	private static Text heteSimPath;
+	private static Text keyWord;
+	private static Text k;
+	private static TabItem tbtmGenerateProfile;
+	private static TabItem tbtmRelevenceSearch;
+	private static TabItem tbtmRecommandationSearch;
+	private static List resultList, resultList2;
+	private static Combo combo;
+	private static Text status;
+	private static ProfileTemplate pt;
+	private static Button btnUseTemplate;
+	private static Text RStext;
+	private static Text hetePath;
+	private static QuickHeteSim qhs = null;
+	private static Composite compositeLeft, compositeRight;
+	private static WeightedTransMats wtm;
 
 	/**
 	 * Launch the application.
@@ -206,7 +208,6 @@ public class MainWindow
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				// TODO 增加new窗口
 				New newWindow = new New(shlHetesimdemo, SWT.DIALOG_TRIM
 						| SWT.SYSTEM_MODAL);
 				srcFilePath = newWindow.open();
@@ -232,11 +233,11 @@ public class MainWindow
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				// TODO 增加open窗口
 				FileDialog open = new FileDialog(shlHetesimdemo, SWT.OPEN);
-				String[] extentions = { "*.hsd", "*.*" };
-				String[] extentionNames = { "HeteSimDemo文件类型(*.hsd)",
-						"所有文件类型(*.*)" };
+				String[] extentions =
+				{ "*.hsd", "*.*" };
+				String[] extentionNames =
+				{ "HeteSimDemo文件类型(*.hsd)", "所有文件类型(*.*)" };
 				open.setFilterExtensions(extentions);
 				open.setFilterNames(extentionNames);
 				String openedPath = open.open();// 打开的文件路径
@@ -259,8 +260,7 @@ public class MainWindow
 													+ dir
 													+ " isn't existed or there isn't any (."
 													+ type + ") file in it");
-						}
-						else
+						} else
 						// 打开成功
 						{
 							srcFilePath = dir;
@@ -291,12 +291,12 @@ public class MainWindow
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please import source data first!");
-				}
-				else
+				} else
 				{
 					FileDialog saveFile = new FileDialog(shlHetesimdemo,
 							SWT.SAVE);
-					saveFile.setFilterExtensions(new String[] { "*.dat" });
+					saveFile.setFilterExtensions(new String[]
+					{ "*.dat" });
 					String savePath = saveFile.open();
 					if (savePath == null)
 						return;
@@ -336,12 +336,11 @@ public class MainWindow
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-
-				// TODO 从已有的data文件反序列化出来
 				FileDialog open = new FileDialog(shlHetesimdemo, SWT.OPEN);
-				String[] extentions = { "*.dat", "*.*" };
-				String[] extentionNames = { "HeteSimDemo文件类型(*.dat)",
-						"所有文件类型(*.*)" };
+				String[] extentions =
+				{ "*.dat", "*.*" };
+				String[] extentionNames =
+				{ "HeteSimDemo文件类型(*.dat)", "所有文件类型(*.*)" };
 				open.setFilterExtensions(extentions);
 				open.setFilterNames(extentionNames);
 				String openedPath = open.open();// 打开的文件路径
@@ -383,15 +382,12 @@ public class MainWindow
 
 					} catch (FileNotFoundException e1)
 					{
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (IOException e1)
 					{
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (ClassNotFoundException e1)
 					{
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					status.setText("");
@@ -435,8 +431,7 @@ public class MainWindow
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please import source data first!");
-				}
-				else
+				} else
 				{
 					PreCalPosMat window = new PreCalPosMat(shlHetesimdemo,
 							SWT.DIALOG_TRIM, data, preCal);
@@ -445,6 +440,70 @@ public class MainWindow
 			}
 		});
 		mntmPrecalposmat.setText("PreCalculation of Paths");
+
+		MenuItem mntmConstructWeightedMatrix = new MenuItem(menu_4, SWT.NONE);
+		mntmConstructWeightedMatrix.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				if (qhs == null)
+				{
+					MessageDialog.openError(shlHetesimdemo, "ERROR",
+							"Please import source data first!");
+				}
+				// TODO 等数据齐全之后完善判断逻辑！
+				else
+				{
+					// TODO demo，现在只以C开头,且非自动，等xml
+
+					wtm = new WeightedTransMats(data);
+					PreCalculate pc = new PreCalculate(data);
+
+					ArrayList<String> paths = pc.calPosiPath("C", "A", 1, 4);
+					TransitiveMatrix tmpMat = wtm.calWeightedMat(paths, qhs);
+					tmpMat.setMatrixName("C-A");
+					wtm.weightedMats.put("C-A", tmpMat);
+
+					paths = pc.calPosiPath("C", "T", 1, 4);
+					tmpMat = wtm.calWeightedMat(paths, qhs);
+					tmpMat.setMatrixName("C-T");
+					wtm.weightedMats.put("C-T", tmpMat);
+
+					paths = pc.calPosiPath("C", "L", 1, 4);
+					tmpMat = wtm.calWeightedMat(paths, qhs);
+					tmpMat.setMatrixName("C-L");
+					wtm.weightedMats.put("C-L", tmpMat);
+
+					paths = pc.calPosiPath("C", "C", 1, 4);
+					tmpMat = wtm.calWeightedMat(paths, qhs);
+					tmpMat.setMatrixName("C-C");
+					wtm.weightedMats.put("C-C", tmpMat);
+
+					try
+					{
+						wtm.outAsStream("C:/HeteSim/weightedMats/C.wtm");
+					} catch (IOException e1)
+					{
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					/*
+					 * try { wtm = WeightedTransMats.loadWeightedTransMats(
+					 * "C:/HeteSim/weightedMats/C.wtm"); } catch
+					 * (ClassNotFoundException | IOException e1) { // TODO
+					 * Auto-generated catch block e1.printStackTrace(); }
+					 */
+
+					MessageDialog.openInformation(shlHetesimdemo,
+							"Loading Finished",
+							"Weighted Matrices has been constructed.");
+				}
+
+			}
+		});
+		mntmConstructWeightedMatrix.setText("Construct Weighted Matrix");
 
 		MenuItem mntmFunction = new MenuItem(menu, SWT.CASCADE);
 		mntmFunction.setText("Functions");
@@ -642,9 +701,10 @@ public class MainWindow
 			{
 				// use template
 				FileDialog open = new FileDialog(shlHetesimdemo, SWT.OPEN);
-				String[] extentions = { "*.prf", "*.*" };
-				String[] extentionNames = { "Profile Template文件类型(*.prf)",
-						"所有文件类型(*.*)" };
+				String[] extentions =
+				{ "*.prf", "*.*" };
+				String[] extentionNames =
+				{ "Profile Template文件类型(*.prf)", "所有文件类型(*.*)" };
 				open.setFilterExtensions(extentions);
 				open.setFilterNames(extentionNames);
 				String openedPath = open.open();// 打开的文件路径
@@ -658,11 +718,9 @@ public class MainWindow
 						btnUseTemplate.setEnabled(false);
 					} catch (IOException e1)
 					{
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (ClassNotFoundException e1)
 					{
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -698,21 +756,18 @@ public class MainWindow
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please import source data first!");
-				}
-				else if (pt == null)
+				} else if (pt == null)
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please use a profile template first");
-				}
-				else if (proName.getText().isEmpty()
+				} else if (proName.getText().isEmpty()
 						|| data.getInstanceIndex(combo.getText()
 								.substring(0, 1), proName.getText()) == -1)
 				{
 					MessageDialog
 							.openError(shlHetesimdemo, "ERROR",
 									"Name is empty or does not existed in the source file");
-				}
-				else
+				} else
 				{
 					status.setText("Calculating........");
 					MessageDialog
@@ -739,8 +794,8 @@ public class MainWindow
 
 						sb.append(getProfileItem(
 								tmp[0],
-								outputFirstKResult(posMat, tmp[1],
-										proName.getText(), tmpk)));
+								outputFirstKResult(posMat, proName.getText(),
+										tmpk)));
 					}
 
 					profileText.setText(sb.toString());
@@ -765,8 +820,7 @@ public class MainWindow
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please import source data first!");
-				}
-				else
+				} else
 				{
 					ProfileOptions opt = new ProfileOptions(shlHetesimdemo,
 							SWT.DIALOG_TRIM, preCal);
@@ -791,17 +845,16 @@ public class MainWindow
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please import source data first!");
-				}
-				else if (profileText.getText().isEmpty())
+				} else if (profileText.getText().isEmpty())
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please generate profile first!");
-				}
-				else
+				} else
 				{
 					FileDialog saveFile = new FileDialog(shlHetesimdemo,
 							SWT.SAVE);
-					saveFile.setFilterExtensions(new String[] { "*.txt" });
+					saveFile.setFilterExtensions(new String[]
+					{ "*.txt" });
 					saveFile.setFileName(keyWord.getText());
 					String savePath = saveFile.open();
 					if (savePath == null)
@@ -828,7 +881,6 @@ public class MainWindow
 						fw.close();
 					} catch (IOException e1)
 					{
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -934,8 +986,7 @@ public class MainWindow
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please import source data first!");
-				}
-				else if (heteSimPath.getText().split(",").length < 2
+				} else if (heteSimPath.getText().split(",").length < 2
 						|| !preCal.isPathRight(heteSimPath.getText()))
 				{
 					MessageDialog
@@ -943,8 +994,7 @@ public class MainWindow
 									shlHetesimdemo,
 									"ERROR",
 									"HeteSim Path illegal. And it must be seperated by \",\" and at least length two");
-				}
-				else if (keyWord.getText().isEmpty()
+				} else if (keyWord.getText().isEmpty()
 						|| data.getInstanceIndex(
 								heteSimPath.getText().split(",")[0],
 								keyWord.getText()) == -1)
@@ -952,13 +1002,11 @@ public class MainWindow
 					MessageDialog
 							.openError(shlHetesimdemo, "ERROR",
 									"key work is empty or does not existed in the source file");
-				}
-				else if (!k.getText().matches("[0-9]*"))
+				} else if (!k.getText().matches("[0-9]*"))
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Max result number should be a number!");
-				}
-				else
+				} else
 				// 所有输入正确
 				{
 					resultList2.setItems(resultList.getItems());
@@ -978,8 +1026,7 @@ public class MainWindow
 					}
 
 					ArrayList<String> results = outputFirstKResultWithValue(
-							posMat, heteSimPath.getText(), keyWord.getText(),
-							maxNum);
+							posMat, keyWord.getText(), maxNum);
 					int i = 1;
 					for (String result : results)
 					{
@@ -1093,13 +1140,11 @@ public class MainWindow
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please import source data first!");
-				}
-				else if (RStext.getText().isEmpty())
+				} else if (RStext.getText().isEmpty())
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Key word is empty!");
-				}
-				else
+				} else
 				{
 					// construct four composites
 					compositeLeft.dispose();
@@ -1193,7 +1238,22 @@ public class MainWindow
 					composite_4.layout();
 
 					// search: fill the lists.
-
+					if (data.getEntities().get("C")
+							.containsName(RStext.getText()))
+					{
+						// 是Conference
+						fillTheList(list1, "Authors", RStext.getText(),
+								wtm.getWeightedMat("C-A"));
+						fillTheList(list2, "Conferences", RStext.getText(),
+								wtm.getWeightedMat("C-C"));
+						fillTheList(list3, "Terms", RStext.getText(),
+								wtm.getWeightedMat("C-T"));
+						fillTheList(list4, "Tags", RStext.getText(),
+								wtm.getWeightedMat("C-L"));
+					} else
+					{
+						// TODO 完善判断逻辑，用xml换掉C
+					}
 				}
 				status.setText("");
 			}
@@ -1216,8 +1276,7 @@ public class MainWindow
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
 							"Please import source data first!");
-				}
-				else
+				} else
 				{
 					int x = btnNewButton_1.getLocation().x
 							+ shlHetesimdemo.getLocation().x;
@@ -1231,15 +1290,13 @@ public class MainWindow
 					{
 						MessageDialog.openError(shlHetesimdemo, "ERROR",
 								"Please input correct HeteSim Path!");
-					}
-					else if (RStext.getText().isEmpty()
+					} else if (RStext.getText().isEmpty()
 							|| data.getInstanceIndex(hetePath.split(",")[0],
 									RStext.getText()) == -1)
 					{
 						MessageDialog.openError(shlHetesimdemo, "ERROR",
 								"Key word is empty or have no result!");
-					}
-					else
+					} else
 					{
 						// 没有初级错误
 
@@ -1272,7 +1329,24 @@ public class MainWindow
 
 						composite_4.layout();
 
-						fillTheList(list1, "", RStext.getText(), hetePath);
+						TransitiveMatrix posMat = null;
+						if (qhs != null)
+						{
+							if (qhs.containsTransitiveMatrix(hetePath))
+							{
+								posMat = qhs.getTransitiveMatrix(hetePath);
+							} else
+							{
+								CalHeteSim calHete = new CalHeteSim(data,
+										hetePath);
+								posMat = calHete.getHeteSim(RStext.getText());
+							}
+						} else
+						{
+							CalHeteSim calHete = new CalHeteSim(data, hetePath);
+							posMat = calHete.getHeteSim(RStext.getText());
+						}
+						fillTheList(list1, "", RStext.getText(), posMat);
 						compositeLeft.layout();
 					}
 				}
@@ -1285,7 +1359,7 @@ public class MainWindow
 
 	@SuppressWarnings("unchecked")
 	private static ArrayList<String> outputFirstKResult(
-			TransitiveMatrix posMat, String hPath, String keyword, int k)
+			TransitiveMatrix posMat, String keyword, int k)
 	{
 		// 排序, 输出前k个(注意不足k个的情况)
 		@SuppressWarnings("rawtypes")
@@ -1294,7 +1368,6 @@ public class MainWindow
 			@Override
 			public int compare(Object o1, Object o2)
 			{
-				// TODO Auto-generated method stub
 				TransNode n1 = (TransNode) o1;
 				TransNode n2 = (TransNode) o2;
 				if (n1.getData() > n2.getData())
@@ -1307,8 +1380,13 @@ public class MainWindow
 		};
 
 		ArrayList<String> result = new ArrayList<String>();
-		String tmp[] = hPath.split(",");
-		String resultType = tmp[tmp.length - 1];
+		if (posMat == null)
+			System.out.println("posMat = null");
+		else
+			System.out.println(posMat.getMatrixName());
+
+		String tmp[] = posMat.getMatrixName().split("-");
+		String resultType = tmp[1];
 		String srcType = tmp[0];
 		int srcIndex = data.getEntities().get(srcType).getIndex(keyword);
 
@@ -1329,7 +1407,7 @@ public class MainWindow
 	}
 
 	private static ArrayList<String> outputFirstKResultWithValue(
-			TransitiveMatrix posMat, String hPath, String keyword, int k)
+			TransitiveMatrix posMat, String keyword, int k)
 	{
 		// 排序, 输出前k个(注意不足k个的情况)
 		@SuppressWarnings("rawtypes")
@@ -1338,7 +1416,6 @@ public class MainWindow
 			@Override
 			public int compare(Object o1, Object o2)
 			{
-				// TODO Auto-generated method stub
 				TransNode n1 = (TransNode) o1;
 				TransNode n2 = (TransNode) o2;
 				if (n1.getData() > n2.getData())
@@ -1351,8 +1428,8 @@ public class MainWindow
 		};
 
 		ArrayList<String> result = new ArrayList<String>();
-		String tmp[] = hPath.split(",");
-		String resultType = tmp[tmp.length - 1];
+		String tmp[] = posMat.getMatrixName().split("-");
+		String resultType = tmp[1];
 		String srcType = tmp[0];
 		int srcIndex = data.getEntities().get(srcType).getIndex(keyword);
 
@@ -1376,36 +1453,16 @@ public class MainWindow
 		return result;
 	}
 
-	private static void fillTheList(List list, String name, String keyWord,
-			String heteSimPath)
+	private static void fillTheList(List list, String listName, String keyWord,
+			TransitiveMatrix posMat)
 	{
-		// TODO Auto-generated method stub
 		list.removeAll();
 
-		TransitiveMatrix posMat = null;
-		if (qhs != null)
-		{
-			if (qhs.containsTransitiveMatrix(heteSimPath))
-			{
-				posMat = qhs.getTransitiveMatrix(heteSimPath);
-			}
-			else
-			{
-				CalHeteSim calHete = new CalHeteSim(data, heteSimPath);
-				posMat = calHete.getHeteSim(keyWord);
-			}
-		}
-		else
-		{
-			CalHeteSim calHete = new CalHeteSim(data, heteSimPath);
-			posMat = calHete.getHeteSim(keyWord);
-		}
-		list.add(name);
+		list.add(listName);
 
 		int maxNum = Integer.MAX_VALUE;
 
-		ArrayList<String> results = outputFirstKResult(posMat, heteSimPath,
-				keyWord, maxNum);
+		ArrayList<String> results = outputFirstKResult(posMat, keyWord, maxNum);
 		int i = 1;
 		for (String result : results)
 		{
