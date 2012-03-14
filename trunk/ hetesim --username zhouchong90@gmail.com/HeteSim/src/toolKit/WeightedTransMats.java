@@ -1,22 +1,72 @@
 package toolKit;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import calHeteSim.QuickHeteSim;
 
 import model.Data;
 import model.TransitiveMatrix;
 
-public class WeightedTransMats
+public class WeightedTransMats implements Serializable
 {
-	private Data	data;
+	private static final long serialVersionUID = 8492903441361529259L;
 
-	public void WeightedTranMats(Data data)
+	private Data	data;
+	
+	/**
+	 * 保存所有的weightedMats
+	 */
+	//TODO 等完善之后改成private
+	public HashMap<String, TransitiveMatrix> weightedMats;
+
+	public WeightedTransMats(Data data)
 	{
 		this.data = data;
+		weightedMats = new HashMap<String,TransitiveMatrix>();
 	}
+	
+	public TransitiveMatrix getWeightedMat(String matName)
+	{
+		if(weightedMats.containsKey(matName))
+			return weightedMats.get(matName);
+		else
+			return null;
+	}
+	
+	public void constructAllWeightedMats()
+	{
+		//TODO construct All WeightedMats from qhs
+	}
+	
+	public static WeightedTransMats loadWeightedTransMats(String modelPath) throws ClassNotFoundException, IOException
+	{
+		File sFile = new File(modelPath);
 
-	public TransitiveMatrix calWeightedMat(ArrayList<String> heteSimPaths)
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream(sFile));
+		WeightedTransMats tmp =  (WeightedTransMats) in.readObject();
+		in.close();
+		return tmp;
+	}
+	
+	public void outAsStream(String filePath) throws FileNotFoundException, IOException
+	{
+		ObjectOutputStream out;
+		out = new ObjectOutputStream(new FileOutputStream(filePath));
+		out.writeObject(this);
+		out.close();
+	}
+	
+
+	public TransitiveMatrix calWeightedMat(ArrayList<String> heteSimPaths, QuickHeteSim qhs)
 	{
 		// calPathsWeights,然后累加
 		ArrayList<Double> weights = calPathWeights(heteSimPaths);//计算各个路径的权值
@@ -25,15 +75,13 @@ public class WeightedTransMats
 		
 		for(String path : heteSimPaths)//构造路径上的概率矩阵
 		{
-			QuickHeteSim qhs = new QuickHeteSim();
 			TransitiveMatrix mat = qhs.getTransitiveMatrix(path);
 			mats.add(mat);
 		}
 		
 		TransitiveMatrix foo = new TransitiveMatrix();
-		foo.weightedPlus(mats, weights);
 		
-		return null;
+		return foo.weightedPlus(mats, weights);
 	}
 
 	/**

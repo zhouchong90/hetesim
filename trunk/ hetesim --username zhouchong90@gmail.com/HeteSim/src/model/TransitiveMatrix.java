@@ -23,6 +23,17 @@ public class TransitiveMatrix implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private String matrixName;
+	
+	
+	public String getMatrixName() {
+		return matrixName;
+	}
+
+	public void setMatrixName(String matrixName) {
+		this.matrixName = matrixName;
+	}
+
 	/**
 	 * it stores the Matrix in a row Packed way;
 	 */
