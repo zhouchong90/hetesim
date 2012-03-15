@@ -56,10 +56,8 @@ public class MainWindow
 	private static String srcFilePath;
 	private static Composite dataView;
 	private static List entityList, relationList;
-
 	private static Data data;
 	private static PreCalculate preCal;
-
 	private static TabFolder tabFolder;
 	private static Text proName;
 	private static StyledText profileText;
@@ -75,7 +73,6 @@ public class MainWindow
 	private static ProfileTemplate pt;
 	private static Button btnUseTemplate;
 	private static Text RStext;
-	private static Text hetePath;
 	private static QuickHeteSim qhs = null;
 	private static Composite compositeLeft, compositeRight;
 	private static WeightedTransMats wtm;
@@ -151,7 +148,6 @@ public class MainWindow
 		scrolledComposite.setExpandVertical(true);
 
 		entityList = new List(scrolledComposite, SWT.BORDER | SWT.V_SCROLL);
-		entityList.setEnabled(false);
 
 		scrolledComposite.setContent(entityList);
 		scrolledComposite.setMinSize(entityList.computeSize(SWT.DEFAULT,
@@ -172,7 +168,6 @@ public class MainWindow
 		scrolledComposite_1.setExpandVertical(true);
 
 		relationList = new List(scrolledComposite_1, SWT.BORDER | SWT.V_SCROLL);
-		relationList.setEnabled(false);
 
 		scrolledComposite_1.setContent(relationList);
 		scrolledComposite_1.setMinSize(relationList.computeSize(SWT.DEFAULT,
@@ -457,44 +452,42 @@ public class MainWindow
 				{
 					// TODO demo，现在只以C开头,且非自动，等xml
 
-					wtm = new WeightedTransMats(data);
-					PreCalculate pc = new PreCalculate(data);
-
-					ArrayList<String> paths = pc.calPosiPath("C", "A", 1, 4);
-					TransitiveMatrix tmpMat = wtm.calWeightedMat(paths, qhs);
-					tmpMat.setMatrixName("C-A");
-					wtm.weightedMats.put("C-A", tmpMat);
-
-					paths = pc.calPosiPath("C", "T", 1, 4);
-					tmpMat = wtm.calWeightedMat(paths, qhs);
-					tmpMat.setMatrixName("C-T");
-					wtm.weightedMats.put("C-T", tmpMat);
-
-					paths = pc.calPosiPath("C", "L", 1, 4);
-					tmpMat = wtm.calWeightedMat(paths, qhs);
-					tmpMat.setMatrixName("C-L");
-					wtm.weightedMats.put("C-L", tmpMat);
-
-					paths = pc.calPosiPath("C", "C", 1, 4);
-					tmpMat = wtm.calWeightedMat(paths, qhs);
-					tmpMat.setMatrixName("C-C");
-					wtm.weightedMats.put("C-C", tmpMat);
+					/*
+					 * wtm = new WeightedTransMats(data); PreCalculate pc = new
+					 * PreCalculate(data);
+					 * 
+					 * ArrayList<String> paths = pc.calPosiPath("C", "A", 1, 4);
+					 * TransitiveMatrix tmpMat = wtm.calWeightedMat(paths, qhs);
+					 * tmpMat.setMatrixName("C-A"); wtm.weightedMats.put("C-A",
+					 * tmpMat);
+					 * 
+					 * paths = pc.calPosiPath("C", "T", 1, 4); tmpMat =
+					 * wtm.calWeightedMat(paths, qhs);
+					 * tmpMat.setMatrixName("C-T"); wtm.weightedMats.put("C-T",
+					 * tmpMat);
+					 * 
+					 * paths = pc.calPosiPath("C", "L", 1, 4); tmpMat =
+					 * wtm.calWeightedMat(paths, qhs);
+					 * tmpMat.setMatrixName("C-L"); wtm.weightedMats.put("C-L",
+					 * tmpMat);
+					 * 
+					 * paths = pc.calPosiPath("C", "C", 1, 4); tmpMat =
+					 * wtm.calWeightedMat(paths, qhs);
+					 * tmpMat.setMatrixName("C-C"); wtm.weightedMats.put("C-C",
+					 * tmpMat);
+					 * 
+					 * try { wtm.outAsStream("C:/HeteSim/weightedMats/C.wtm"); }
+					 * catch (IOException e1) { e1.printStackTrace(); }
+					 */
 
 					try
 					{
-						wtm.outAsStream("C:/HeteSim/weightedMats/C.wtm");
-					} catch (IOException e1)
+						wtm = WeightedTransMats
+								.loadWeightedTransMats("C:/HeteSim/weightedMats/C.wtm");
+					} catch (ClassNotFoundException | IOException e1)
 					{
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
-					/*
-					 * try { wtm = WeightedTransMats.loadWeightedTransMats(
-					 * "C:/HeteSim/weightedMats/C.wtm"); } catch
-					 * (ClassNotFoundException | IOException e1) { // TODO
-					 * Auto-generated catch block e1.printStackTrace(); }
-					 */
 
 					MessageDialog.openInformation(shlHetesimdemo,
 							"Loading Finished",
@@ -1410,11 +1403,10 @@ public class MainWindow
 			TransitiveMatrix posMat, String keyword, int k)
 	{
 		// 排序, 输出前k个(注意不足k个的情况)
-		@SuppressWarnings("rawtypes")
-		Comparator c = new Comparator()
+		Comparator<TransNode> c = new Comparator<TransNode>()
 		{
 			@Override
-			public int compare(Object o1, Object o2)
+			public int compare(TransNode o1, TransNode o2)
 			{
 				TransNode n1 = (TransNode) o1;
 				TransNode n2 = (TransNode) o2;

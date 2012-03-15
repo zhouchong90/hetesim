@@ -11,6 +11,10 @@ import java.util.ArrayList;
 
 public class ProfileTemplate implements Serializable
 {
+	private static final long serialVersionUID = 7194759409409099301L;
+	/**
+	 * 
+	 */
 	public String type; 
 	public ArrayList<String> ProfileList;
 	//“‘@∑÷∏Ó, name@path@K

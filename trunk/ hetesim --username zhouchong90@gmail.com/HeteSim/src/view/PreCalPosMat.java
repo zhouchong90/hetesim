@@ -9,7 +9,6 @@ import model.Data;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import calHeteSim.QuickHeteSim;
@@ -161,11 +160,9 @@ public class PreCalPosMat extends Dialog
 					}
 				} catch (FileNotFoundException e1)
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1)
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -350,11 +347,9 @@ public class PreCalPosMat extends Dialog
 
 						} catch (FileNotFoundException e1)
 						{
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						} catch (IOException e1)
 						{
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
@@ -404,15 +399,12 @@ public class PreCalPosMat extends Dialog
 					}
 				} catch (FileNotFoundException e1)
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1)
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (ClassNotFoundException e1)
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

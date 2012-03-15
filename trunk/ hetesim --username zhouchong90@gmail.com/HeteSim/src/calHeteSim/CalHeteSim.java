@@ -239,9 +239,7 @@ public class CalHeteSim
 				nextMat = data.getTransMat(paths.get(i));
 			list.add(nextMat);
 		}
-		System.out.println("Initial sequence of paths has been formed.");
 
-		int m = 1;
 		while (list.size() > 1)// 只有一个，不用乘
 		{
 			TransitiveMatrix result;
@@ -263,17 +261,19 @@ public class CalHeteSim
 				}
 			}
 
-			System.out.println("Calculating the " + m + " matrix.");
+			System.out.println("Calculating " + list.get(minIndex).getMatrixName()+"*"+list.get(minIndex + 1).getMatrixName());
+			long start = System.currentTimeMillis();
+			
 			result = list.get(minIndex).times(list.get(minIndex + 1));// 计算结果
-			System.out.println("the " + m + " done in:"
-					+ System.currentTimeMillis());
+			
+			System.out.println("Multiplication done in:"
+					+ (System.currentTimeMillis()-start)/1000);
 
 			// 调整链表
 
 			list.remove(minIndex + 1);
 			list.remove(minIndex);
 			list.add(minIndex, result);
-			m++;
 		}
 		return list.get(0);
 	}

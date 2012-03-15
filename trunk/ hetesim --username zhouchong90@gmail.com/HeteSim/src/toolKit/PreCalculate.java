@@ -1,13 +1,8 @@
 package toolKit;
 
-import model.AdjMatrix;
 import model.Data;
-import model.Entity;
-import model.TransitiveMatrix;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.ArrayList;
 
 import calHeteSim.QuickHeteSim;
@@ -36,7 +31,7 @@ public class PreCalculate {
 		for(int i = 0;i < this.size;i++)
 			for(int j = 0;j < this.size;j++)
 				adjMatrix[i][j] = false;
-		nodeList = new ArrayList();
+		nodeList = new ArrayList<String>();
 		for(String node : data.getEntities().keySet())
 		{
 			if(!nodeList.contains(node))
