@@ -288,7 +288,7 @@ public class TransitiveMatrix implements Serializable
 		double i = 1;
 		int j = 0;	
 		
-		// 如果A的某一行i或者B的某一列j全是零, 那C里的第i行和第j列肯定也都是0, 不用计算
+
 		for (LinkedList<TransNode> row : rows.values())
 		{
 			for (LinkedList<TransNode> col : B.getCols().values())
