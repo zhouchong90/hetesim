@@ -140,8 +140,7 @@ public abstract class LoadData
 			// 对于每个relation,要添加两个transMat
 			System.out.println("transforming " + relationName);
 			
-			TransitiveMatrix newTransMat = new TransitiveMatrix(
-					relations.get(relationName));
+			TransitiveMatrix newTransMat = new TransitiveMatrix(relations.get(relationName));
 			newTransMat.setMatrixName(relationName);
 			newTransMat.calAvgDegrees();
 			
@@ -150,8 +149,7 @@ public abstract class LoadData
 			String[] tmp = relationName.split("-");
 			String transposeName = tmp[1].concat("-").concat(tmp[0]);
 
-			TransitiveMatrix transposeMat = new TransitiveMatrix(relations.get(
-					relationName).transpose());
+			TransitiveMatrix transposeMat = new TransitiveMatrix(relations.get(relationName).transpose());
 			transposeMat.setMatrixName(transposeName);
 			transposeMat.calAvgDegrees();
 			

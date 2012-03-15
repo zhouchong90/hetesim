@@ -77,11 +77,6 @@ public class AdjMatrix {
 			int i = 0;
 			LinkedList<AdjNode> row = rows.get(node.getRowIndex()); 
 			int length = row.size();
-			//找到对应的index
-/*			while (i < length && node.getColIndex() > row.get(i).getColIndex())
-			{
-				i++;
-			}*/
 			
 			for(AdjNode tmpNode:row)
 			{
@@ -115,11 +110,6 @@ public class AdjMatrix {
 			LinkedList<AdjNode> col = cols.get(node.getColIndex()); 
 			int length = col.size();
 			//找到对应的index
-/*			while (i < length && node.getRowIndex() > col.get(i).getRowIndex())
-			{
-				i++;
-			}
-			*/
 			for(AdjNode tmpNode:col)
 			{
 				if(node.getRowIndex() > tmpNode.getRowIndex())
@@ -154,9 +144,9 @@ public class AdjMatrix {
 		AdjMatrix trans = new AdjMatrix(this.colDim, this.rowDim);
 		
 		//重新构造整个矩阵
-		for(int i : this.rows.keySet())
+		for(LinkedList<AdjNode> row : this.rows.values())
 		{
-			for(AdjNode a : rows.get(i))
+			for(AdjNode a : row)
 			{
 				AdjNode newNode = new AdjNode(a.getColIndex(), a.getRowIndex());
 				trans.insertOneInstance(newNode);

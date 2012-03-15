@@ -87,7 +87,7 @@ public class Decompose
 			second.add(sb.toString());
 		}
 		StringBuffer secondTmp = new StringBuffer();
-		secondTmp.append(splits[splits.length/2]).append("-").append("*");
+		secondTmp.append(splits[splits.length/2]).append("-").append("#");
 		second.add(secondTmp.toString());
 		
 		List<List<String>> result = new ArrayList<List<String>>();
@@ -99,7 +99,7 @@ public class Decompose
 	
 	/**
 	 * generate the middle matrix.
-	 * P,V--> P-*, V-* 
+	 * P,V--> P-*, V-#
 	 * @param middlePath
 	 * @param left
 	 * @param right
@@ -114,16 +114,16 @@ public class Decompose
 		}
 		String[] tmp = midMatName.split("-");
 		String leftMatName = tmp[0]+"-"+"*";
-		String rightMatName = tmp[1]+"-"+"*";
+		String rightMatName = tmp[1]+"-"+"#";
 		
 		//统计非0元素的个数
 		int numOfOnes = 0;
-		for(Integer row:midMat.getRows().keySet())
-			numOfOnes+=midMat.getRows().get(row).size();
+		for(LinkedList<TransNode> row:midMat.getRows().values())
+			numOfOnes+=row.size();
 		
 		TransitiveMatrix left = new TransitiveMatrix(midMat.getRowDim(),numOfOnes);//P-*
-		tmpMat.put(leftMatName, left);
-		
+		left.setMatrixName(leftMatName);
+
 		AdjMatrix rightTrans = new AdjMatrix(midMat.getColDim(),numOfOnes);//V-*
 	
 		//midMat的没条连线的编号
@@ -139,6 +139,9 @@ public class Decompose
 		}
 		
 		TransitiveMatrix right = new TransitiveMatrix(rightTrans);
+		right.setMatrixName(rightMatName);
+		
+		tmpMat.put(leftMatName, left);
 		tmpMat.put(rightMatName, right);
 	}
 }

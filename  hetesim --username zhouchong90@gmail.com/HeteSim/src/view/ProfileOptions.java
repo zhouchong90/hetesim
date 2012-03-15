@@ -207,11 +207,9 @@ public class ProfileOptions extends Dialog
 					pt.OutAsStream(savePath);
 				} catch (FileNotFoundException e1)
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1)
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
