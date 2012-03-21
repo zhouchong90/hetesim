@@ -13,7 +13,7 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.text_3.5.101.r371_v20110810-0800.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.ui.forms_3.5.100.v20110425.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.ui.workbench_3.7.0.I20110519-0100.jar"/>
+	<classpathentry kind="lib" path="lib/swing2swt.jar"/>
 	<classpathentry kind="lib" path="lib/swt.jar"/>
-	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

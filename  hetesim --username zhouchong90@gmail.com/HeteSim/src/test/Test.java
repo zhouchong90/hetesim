@@ -71,7 +71,7 @@ public class Test {
 		//wtm.weightedMats.put("C-A", wtm.calWeightedMat(paths,qhs));		
 		//System.out.println("all done in:"+(System.currentTimeMillis()-mid)/1000+"s");
 		
-		CalHeteSim chs = new CalHeteSim(data, "M,C,M,T");
+		CalHeteSim chs = new CalHeteSim(data, "A,M,A,M,A");
 		chs.getHeteSim();
 		System.out.println("done in:"+(System.currentTimeMillis()-mid)/1000 +"s");
 	}
