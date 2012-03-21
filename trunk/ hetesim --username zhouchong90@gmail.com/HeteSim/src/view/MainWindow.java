@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 
 import model.Data;
+import model.Entity;
 import model.TransNode;
 import model.TransitiveMatrix;
 
@@ -49,6 +50,7 @@ import calHeteSim.CalHeteSim;
 import calHeteSim.QuickHeteSim;
 import toolKit.PreCalculate;
 import toolKit.WeightedTransMats;
+import org.eclipse.swt.custom.SashForm;
 
 public class MainWindow
 {
@@ -74,8 +76,8 @@ public class MainWindow
 	private static Button btnUseTemplate;
 	private static Text RStext;
 	private static QuickHeteSim qhs = null;
-	private static Composite compositeLeft, compositeRight;
 	private static WeightedTransMats wtm;
+	private static SashForm sashForm;
 
 	/**
 	 * Launch the application.
@@ -177,6 +179,8 @@ public class MainWindow
 	private static void constructFunctionsFolder()
 	{
 		tabFolder = new TabFolder(shlHetesimdemo, SWT.NONE);
+		tabFolder.setForeground(SWTResourceManager
+				.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		tabFolder.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
@@ -439,46 +443,56 @@ public class MainWindow
 		MenuItem mntmConstructWeightedMatrix = new MenuItem(menu_4, SWT.NONE);
 		mntmConstructWeightedMatrix.addSelectionListener(new SelectionAdapter()
 		{
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse
+			 * .swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				if (qhs == null)
 				{
 					MessageDialog.openError(shlHetesimdemo, "ERROR",
-							"Please import source data first!");
+							"Please load preCaled Mats first!");
 				}
 				// TODO 等数据齐全之后完善判断逻辑！
 				else
 				{
 					// TODO demo，现在只以C开头,且非自动，等xml
 
-					/*
-					 * wtm = new WeightedTransMats(data); PreCalculate pc = new
-					 * PreCalculate(data);
-					 * 
-					 * ArrayList<String> paths = pc.calPosiPath("C", "A", 1, 4);
-					 * TransitiveMatrix tmpMat = wtm.calWeightedMat(paths, qhs);
-					 * tmpMat.setMatrixName("C-A"); wtm.weightedMats.put("C-A",
-					 * tmpMat);
-					 * 
-					 * paths = pc.calPosiPath("C", "T", 1, 4); tmpMat =
-					 * wtm.calWeightedMat(paths, qhs);
-					 * tmpMat.setMatrixName("C-T"); wtm.weightedMats.put("C-T",
-					 * tmpMat);
-					 * 
-					 * paths = pc.calPosiPath("C", "L", 1, 4); tmpMat =
-					 * wtm.calWeightedMat(paths, qhs);
-					 * tmpMat.setMatrixName("C-L"); wtm.weightedMats.put("C-L",
-					 * tmpMat);
-					 * 
-					 * paths = pc.calPosiPath("C", "C", 1, 4); tmpMat =
-					 * wtm.calWeightedMat(paths, qhs);
-					 * tmpMat.setMatrixName("C-C"); wtm.weightedMats.put("C-C",
-					 * tmpMat);
-					 * 
-					 * try { wtm.outAsStream("C:/HeteSim/weightedMats/C.wtm"); }
-					 * catch (IOException e1) { e1.printStackTrace(); }
-					 */
+//					wtm = new WeightedTransMats(data);
+//					PreCalculate pc = new PreCalculate(data);
+//
+//					ArrayList<String> paths = pc.calPosiPath("C", "A", 1, 4);
+//					TransitiveMatrix tmpMat = wtm.calWeightedMat(paths, qhs);
+//					tmpMat.setMatrixName("C-A");
+//					wtm.weightedMats.put("C-A", tmpMat);
+//
+//					paths = pc.calPosiPath("C", "T", 1, 4);
+//					tmpMat = wtm.calWeightedMat(paths, qhs);
+//					tmpMat.setMatrixName("C-T");
+//					wtm.weightedMats.put("C-T", tmpMat);
+//
+//					paths = pc.calPosiPath("C", "L", 1, 4);
+//					tmpMat = wtm.calWeightedMat(paths, qhs);
+//					tmpMat.setMatrixName("C-L");
+//					wtm.weightedMats.put("C-L", tmpMat);
+//
+//					paths = pc.calPosiPath("C", "C", 1, 4);
+//					tmpMat = wtm.calWeightedMat(paths, qhs);
+//					tmpMat.setMatrixName("C-C");
+//					wtm.weightedMats.put("C-C", tmpMat);
+//
+//					try
+//					{
+//						wtm.outAsStream("C:/HeteSim/weightedMats/C.wtm");
+//					} catch (IOException e1)
+//					{
+//						e1.printStackTrace();
+//					}
 
 					try
 					{
@@ -1084,42 +1098,29 @@ public class MainWindow
 		tbtmRecommandationSearch = new TabItem(tabFolder, SWT.NONE);
 		tbtmRecommandationSearch.setText("Recommandation Search");
 
-		final Composite composite_4 = new Composite(tabFolder, SWT.BORDER);
-		composite_4.setBackground(SWTResourceManager
+		final Composite composite = new Composite(tabFolder, SWT.BORDER);
+		composite.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		tbtmRecommandationSearch.setControl(composite_4);
-		composite_4.setLayout(new GridLayout(2, false));
+		tbtmRecommandationSearch.setControl(composite);
+		composite.setLayout(new GridLayout(1, false));
 
-		Composite composite_5 = new Composite(composite_4, SWT.NONE);
-		composite_5.setLayout(new GridLayout(3, false));
-		composite_5.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false,
-				1, 1));
+		Composite searchComposite = new Composite(composite, SWT.NONE);
+		searchComposite.setLayout(new GridLayout(3, false));
+		GridData gd_searchComposite = new GridData(SWT.FILL, SWT.CENTER, true,
+				false, 1, 1);
+		gd_searchComposite.heightHint = 52;
+		searchComposite.setLayoutData(gd_searchComposite);
 
-		Composite composite_1 = new Composite(composite_4, SWT.NONE);
-		composite_1.setLayout(new GridLayout(2, false));
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
-				false, 1, 1));
+		sashForm = new SashForm(composite, SWT.NONE);
+		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
+				1));
 
-		compositeLeft = new Composite(composite_4, SWT.NONE);
-		compositeLeft.setLayout(new GridLayout(1, false));
-		GridData gd_compositeLeft = new GridData(SWT.FILL, SWT.FILL, true,
-				true, 1, 1);
-		gd_compositeLeft.widthHint = 577;
-		compositeLeft.setLayoutData(gd_compositeLeft);
-
-		compositeRight = new Composite(composite_4, SWT.NONE);
-		compositeRight.setLayout(new GridLayout(1, false));
-		GridData gd_compositeRight = new GridData(SWT.RIGHT, SWT.FILL, false,
-				true, 1, 1);
-		gd_compositeRight.widthHint = 132;
-		compositeRight.setLayoutData(gd_compositeRight);
-
-		RStext = new Text(composite_5, SWT.BORDER);
+		RStext = new Text(searchComposite, SWT.BORDER);
 		RStext.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 1,
 				1));
 		RStext.setText("");
 
-		Button btnNewButton = new Button(composite_5, SWT.NONE);
+		Button btnNewButton = new Button(searchComposite, SWT.NONE);
 		btnNewButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
 				true, 1, 1));
 		btnNewButton.addSelectionListener(new SelectionAdapter()
@@ -1139,121 +1140,145 @@ public class MainWindow
 							"Key word is empty!");
 				} else
 				{
-					// construct four composites
-					compositeLeft.dispose();
+					// construct five composites
+					sashForm.dispose();
 
-					compositeLeft = new Composite(composite_4, SWT.NONE);
-					compositeLeft.setLayout(new GridLayout(1, false));
-					GridData gd_compositeLeft = new GridData(SWT.FILL,
-							SWT.FILL, true, true, 1, 1);
-					gd_compositeLeft.widthHint = 577;
-					compositeLeft.setLayoutData(gd_compositeLeft);
+					sashForm = new SashForm(composite, SWT.NONE);
+					sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+							true, true, 1, 1));
 
-					compositeRight.dispose();
+					SashForm sashForm_1 = new SashForm(sashForm, SWT.VERTICAL);
 
-					compositeRight = new Composite(composite_4, SWT.NONE);
-					compositeRight.setLayout(new GridLayout(1, false));
-					GridData gd_compositeRight = new GridData(SWT.RIGHT,
-							SWT.FILL, false, true, 1, 1);
-					gd_compositeRight.widthHint = 132;
-					compositeRight.setLayoutData(gd_compositeRight);
+					Group grpLable1 = new Group(sashForm_1, SWT.NONE);
+					grpLable1.setText("lable1");
+					grpLable1.setLayout(new GridLayout(1, false));
 
-					Label lblLable1 = new Label(compositeLeft, SWT.NONE);
-					lblLable1.setText("lablel1");
+					ScrolledComposite scrolledComposite = new ScrolledComposite(
+							grpLable1, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+					scrolledComposite.setLayoutData(new GridData(SWT.FILL,
+							SWT.FILL, true, true, 1, 1));
+					scrolledComposite.setExpandHorizontal(true);
+					scrolledComposite.setExpandVertical(true);
+
+					List list1 = new List(scrolledComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+					scrolledComposite.setContent(list1);
+					scrolledComposite.setMinSize(list1.computeSize(SWT.DEFAULT,
+							SWT.DEFAULT));
+
+					Group grpLable2 = new Group(sashForm_1, SWT.NONE);
+					grpLable2.setText("lable2");
+					grpLable2.setLayout(new GridLayout(1, false));
+
+					ScrolledComposite scrolledComposite_2 = new ScrolledComposite(
+							grpLable2, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+					scrolledComposite_2.setLayoutData(new GridData(SWT.FILL,
+							SWT.FILL, true, true, 1, 1));
+					scrolledComposite_2.setExpandHorizontal(true);
+					scrolledComposite_2.setExpandVertical(true);
+
+					List list2 = new List(scrolledComposite_2, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+					scrolledComposite_2.setContent(list2);
+					scrolledComposite_2.setMinSize(list2.computeSize(
+							SWT.DEFAULT, SWT.DEFAULT));
+					sashForm_1.setWeights(new int[]
+					{ 223, 139 });
+
+					SashForm sashForm_2 = new SashForm(sashForm, SWT.VERTICAL);
+
+					Group grpLable3 = new Group(sashForm_2, SWT.NONE);
+					grpLable3.setText("lable3");
+					grpLable3.setLayout(new GridLayout(1, false));
 
 					ScrolledComposite scrolledComposite_1 = new ScrolledComposite(
-							compositeLeft, SWT.BORDER | SWT.H_SCROLL
-									| SWT.V_SCROLL);
+							grpLable3, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 					scrolledComposite_1.setLayoutData(new GridData(SWT.FILL,
 							SWT.FILL, true, true, 1, 1));
 					scrolledComposite_1.setExpandHorizontal(true);
 					scrolledComposite_1.setExpandVertical(true);
 
-					List list1 = new List(scrolledComposite_1, SWT.BORDER
-							| SWT.H_SCROLL | SWT.V_SCROLL);
-					scrolledComposite_1.setContent(list1);
-					scrolledComposite_1.setMinSize(list1.computeSize(
+					List list3 = new List(scrolledComposite_1, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+					scrolledComposite_1.setContent(list3);
+					scrolledComposite_1.setMinSize(list3.computeSize(
 							SWT.DEFAULT, SWT.DEFAULT));
 
-					Label lblLabel2 = new Label(compositeLeft, SWT.NONE);
-					lblLabel2.setText("label2");
-
-					ScrolledComposite scrolledComposite_2 = new ScrolledComposite(
-							compositeLeft, SWT.BORDER | SWT.H_SCROLL
-									| SWT.V_SCROLL);
-					GridData gd_scrolledComposite_2 = new GridData(SWT.FILL,
-							SWT.FILL, true, false, 1, 1);
-					gd_scrolledComposite_2.heightHint = 76;
-					scrolledComposite_2.setLayoutData(gd_scrolledComposite_2);
-					scrolledComposite_2.setExpandHorizontal(true);
-					scrolledComposite_2.setExpandVertical(true);
-
-					List list2 = new List(scrolledComposite_2, SWT.BORDER
-							| SWT.H_SCROLL | SWT.V_SCROLL);
-					scrolledComposite_2.setContent(list2);
-					scrolledComposite_2.setMinSize(list2.computeSize(
-							SWT.DEFAULT, SWT.DEFAULT));
-
-					Label lblLabel3 = new Label(compositeRight, SWT.NONE);
-					lblLabel3.setText("label3");
+					Group grpLable4 = new Group(sashForm_2, SWT.NONE);
+					grpLable4.setText("lable4");
+					grpLable4.setLayout(new GridLayout(1, false));
 
 					ScrolledComposite scrolledComposite_3 = new ScrolledComposite(
-							compositeRight, SWT.BORDER | SWT.H_SCROLL
-									| SWT.V_SCROLL);
+							grpLable4, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 					scrolledComposite_3.setLayoutData(new GridData(SWT.FILL,
 							SWT.FILL, true, true, 1, 1));
 					scrolledComposite_3.setExpandHorizontal(true);
 					scrolledComposite_3.setExpandVertical(true);
 
-					List list3 = new List(scrolledComposite_3, SWT.BORDER
-							| SWT.H_SCROLL | SWT.V_SCROLL);
-					scrolledComposite_3.setContent(list3);
-					scrolledComposite_3.setMinSize(list3.computeSize(
+					List list4 = new List(scrolledComposite_3, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+					scrolledComposite_3.setContent(list4);
+					scrolledComposite_3.setMinSize(list4.computeSize(
 							SWT.DEFAULT, SWT.DEFAULT));
 
-					Label lblLabel4 = new Label(compositeRight, SWT.NONE);
-					lblLabel4.setText("label4");
+					Group grpLable5 = new Group(sashForm_2, SWT.NONE);
+					grpLable5.setText("lable5");
+					grpLable5.setLayout(new GridLayout(1, false));
 
 					ScrolledComposite scrolledComposite_4 = new ScrolledComposite(
-							compositeRight, SWT.BORDER | SWT.H_SCROLL
-									| SWT.V_SCROLL);
+							grpLable5, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 					scrolledComposite_4.setLayoutData(new GridData(SWT.FILL,
 							SWT.FILL, true, true, 1, 1));
 					scrolledComposite_4.setExpandHorizontal(true);
 					scrolledComposite_4.setExpandVertical(true);
 
-					List list4 = new List(scrolledComposite_4, SWT.BORDER
-							| SWT.H_SCROLL | SWT.V_SCROLL);
-					scrolledComposite_4.setContent(list4);
-					scrolledComposite_4.setMinSize(list4.computeSize(
+					List list5 = new List(scrolledComposite_4, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+					scrolledComposite_4.setContent(list5);
+					scrolledComposite_4.setMinSize(list5.computeSize(
 							SWT.DEFAULT, SWT.DEFAULT));
+					sashForm_2.setWeights(new int[]
+					{ 1, 1, 1 });
+					sashForm.setWeights(new int[]
+					{ 563, 172 });
 
-					composite_4.layout();
+					composite.layout();
 
 					// search: fill the lists.
-					if (data.getEntities().get("C")
-							.containsName(RStext.getText()))
-					{
-						// 是Conference
-						fillTheList(list1, "Authors", RStext.getText(),
-								wtm.getWeightedMat("C-A"));
-						fillTheList(list2, "Conferences", RStext.getText(),
-								wtm.getWeightedMat("C-C"));
-						fillTheList(list3, "Terms", RStext.getText(),
-								wtm.getWeightedMat("C-T"));
-						fillTheList(list4, "Tags", RStext.getText(),
-								wtm.getWeightedMat("C-L"));
-					} else
-					{
-						// TODO 完善判断逻辑，用xml换掉C
-					}
+//有问题				for(String eName : data.getEntities().keySet())
+//					{
+//						if(data.getEntities().get(eName).containsName(RStext.getText()))
+//						{
+//							for(String otherName : data.getEntities().keySet())
+//							{
+//								if(eName!=otherName)
+//							{
+//									
+//								}
+//							}
+//							
+//							grpLable1.setText("Authors");
+//							fillTheList(list1, "", RStext.getText(),
+//									wtm.getWeightedMat("C-A"));
+//							
+//							grpLable2.setText("Conferences");
+//							fillTheList(list2, "", RStext.getText(),
+//									wtm.getWeightedMat("C-C"));
+//							
+//							grpLable3.setText("Terms");
+//							fillTheList(list3, "", RStext.getText(),
+//									wtm.getWeightedMat("C-T"));
+//							
+//							grpLable4.setText("Tags");
+//							fillTheList(list4, "", RStext.getText(),
+//									wtm.getWeightedMat("C-L"));
+//							
+//							break;
+//						}
+//					}
+					sashForm.layout();
 				}
 				status.setText("");
 			}
 		});
 		btnNewButton.setText("Search");
 
-		final Button btnNewButton_1 = new Button(composite_5, SWT.NONE);
+		final Button btnNewButton_1 = new Button(searchComposite, SWT.NONE);
 		btnNewButton_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
 				true, 1, 1));
 		btnNewButton_1.addSelectionListener(new SelectionAdapter()
@@ -1293,35 +1318,34 @@ public class MainWindow
 					{
 						// 没有初级错误
 
-						compositeLeft.dispose();
-						compositeRight.dispose();
+						sashForm.dispose();
 
-						compositeLeft = new Composite(composite_4, SWT.NONE);
-						compositeLeft.setLayout(new GridLayout(1, false));
-						GridData gd_compositeLeft = new GridData(SWT.FILL,
-								SWT.FILL, true, true, 1, 1);
-						gd_compositeLeft.widthHint = 599;
-						compositeLeft.setLayoutData(gd_compositeLeft);
+						sashForm = new SashForm(composite, SWT.NONE);
+						sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+								true, true, 1, 1));
 
-						Label lblLable1 = new Label(compositeLeft, SWT.NONE);
-						lblLable1.setText("lablel1");
+						SashForm sashForm_1 = new SashForm(sashForm,
+								SWT.VERTICAL);
 
-						ScrolledComposite scrolledComposite_1 = new ScrolledComposite(
-								compositeLeft, SWT.BORDER | SWT.H_SCROLL
+						Group grpLable1 = new Group(sashForm_1, SWT.NONE);
+						grpLable1.setText("lable1");
+						grpLable1.setLayout(new GridLayout(1, false));
+
+						ScrolledComposite scrolledComposite = new ScrolledComposite(
+								grpLable1, SWT.BORDER | SWT.H_SCROLL
 										| SWT.V_SCROLL);
-						scrolledComposite_1.setLayoutData(new GridData(
-								SWT.FILL, SWT.FILL, true, true, 1, 1));
-						scrolledComposite_1.setExpandHorizontal(true);
-						scrolledComposite_1.setExpandVertical(true);
+						scrolledComposite.setLayoutData(new GridData(SWT.FILL,
+								SWT.FILL, true, true, 1, 1));
+						scrolledComposite.setExpandHorizontal(true);
+						scrolledComposite.setExpandVertical(true);
 
-						List list1 = new List(scrolledComposite_1, SWT.BORDER
-								| SWT.H_SCROLL | SWT.V_SCROLL);
-						scrolledComposite_1.setContent(list1);
-						scrolledComposite_1.setMinSize(list1.computeSize(
+						List list1 = new List(scrolledComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+						scrolledComposite.setContent(list1);
+						scrolledComposite.setMinSize(list1.computeSize(
 								SWT.DEFAULT, SWT.DEFAULT));
 
-						composite_4.layout();
-
+						composite.layout();
+						// fill the list
 						TransitiveMatrix posMat = null;
 						if (qhs != null)
 						{
@@ -1339,8 +1363,10 @@ public class MainWindow
 							CalHeteSim calHete = new CalHeteSim(data, hetePath);
 							posMat = calHete.getHeteSim(RStext.getText());
 						}
+						grpLable1.setText(hetePath);
 						fillTheList(list1, "", RStext.getText(), posMat);
-						compositeLeft.layout();
+
+						sashForm.layout();
 					}
 				}
 
@@ -1450,11 +1476,12 @@ public class MainWindow
 	{
 		list.removeAll();
 
-		list.add(listName);
+		if(!listName.isEmpty())
+			list.add(listName);
 
 		int maxNum = Integer.MAX_VALUE;
 
-		ArrayList<String> results = outputFirstKResult(posMat, keyWord, maxNum);
+		ArrayList<String> results = outputFirstKResultWithValue(posMat, keyWord, maxNum);
 		int i = 1;
 		for (String result : results)
 		{

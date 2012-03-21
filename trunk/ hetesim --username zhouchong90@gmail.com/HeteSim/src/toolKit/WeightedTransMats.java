@@ -41,12 +41,7 @@ public class WeightedTransMats implements Serializable
 		else
 			return null;
 	}
-	
-	public void constructAllWeightedMats()
-	{
-		//TODO construct All WeightedMats from qhs
-	}
-	
+
 	public static WeightedTransMats loadWeightedTransMats(String modelPath) throws ClassNotFoundException, IOException
 	{
 		File sFile = new File(modelPath);
@@ -65,7 +60,6 @@ public class WeightedTransMats implements Serializable
 		out.close();
 	}
 	
-
 	public TransitiveMatrix calWeightedMat(ArrayList<String> heteSimPaths, QuickHeteSim qhs)
 	{
 		// calPathsWeights,»ª∫Û¿€º”

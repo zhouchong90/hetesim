@@ -31,7 +31,7 @@ public class LoadTxt extends LoadFile
 		for (String relationPath : relationPaths)
 		{
 			String relationName = getFileTypeName(relationPath);
-			System.out.println("loading "+relationName);
+//			System.out.println("loading "+relationName);
 			FileReader fr = new FileReader(relationPath);
 			BufferedReader reader = new BufferedReader(fr);
 
@@ -56,7 +56,7 @@ public class LoadTxt extends LoadFile
 		for (String entityPath : entityPaths)
 		{
 			String entityName = getFileTypeName(entityPath);
-			System.out.println("loading "+entityName);
+//			System.out.println("loading "+entityName);
 			FileReader fr = new FileReader(entityPath);
 			BufferedReader reader = new BufferedReader(fr);
 

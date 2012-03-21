@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * this matrix calculates and store the possibilityMatrix all constructing and
@@ -24,33 +25,34 @@ public class TransitiveMatrix implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	private String matrixName;
-	
-	
-	public String getMatrixName() {
+
+	public String getMatrixName()
+	{
 		return matrixName;
 	}
 
-	public void setMatrixName(String matrixName) {
+	public void setMatrixName(String matrixName)
+	{
 		this.matrixName = matrixName;
 	}
 
 	/**
 	 * it stores the Matrix in a row Packed way;
 	 */
-	private HashMap<Integer, LinkedList<TransNode>>	rows;
-	
+	private HashMap<Integer, LinkedList<TransNode>> rows;
+
 	/**
 	 * when the result data is smaller than this, it deletes the result
 	 */
-	private double	deleteLimit = 0.0000;
-	
+	private double deleteLimit = 0.0000;
+
 	/**
 	 * it stores the Matrix in a col Packed way;
 	 */
-	private HashMap<Integer, LinkedList<TransNode>>	cols;
-	
+	private HashMap<Integer, LinkedList<TransNode>> cols;
+
 	private int rowAvgOutDegree, colAvgInDegree;
-	
+
 	public int getRowAvgOutDegree()
 	{
 		return rowAvgOutDegree;
@@ -71,8 +73,7 @@ public class TransitiveMatrix implements Serializable
 		return cols;
 	}
 
-	private int	colDim, rowDim;
-
+	private int colDim, rowDim;
 
 	public int getColDim()
 	{
@@ -131,7 +132,7 @@ public class TransitiveMatrix implements Serializable
 	{
 		TransitiveMatrix rowMat = new TransitiveMatrix(1, this.getColDim());
 		rowMat.setMatrixName(matrixName);
-		
+
 		for (TransNode node : rows.get(rowIndex))
 			rowMat.insertOneInstance(node);
 
@@ -148,13 +149,13 @@ public class TransitiveMatrix implements Serializable
 	{
 		TransitiveMatrix colMat = new TransitiveMatrix(this.getRowDim(), 1);
 		colMat.setMatrixName(matrixName);
-		
+
 		for (TransNode node : cols.get(colIndex))
 			colMat.insertOneInstance(node);
 
 		return colMat;
 	}
-	
+
 	/**
 	 * add a new node to this Matrix
 	 * 
@@ -173,33 +174,35 @@ public class TransitiveMatrix implements Serializable
 		// 插入行
 		if (rows.containsKey(node.getRowIndex()))// 旧行
 		{
-			int i = 0;
-			LinkedList<TransNode> row = rows.get(node.getRowIndex());
-			int length = row.size();
-			// 找到对应的index
-/*			while (i < length && node.getColIndex() > row.get(i).getColIndex())
+			ListIterator<TransNode> lit = rows.get(node.getRowIndex()).listIterator();
+
+			TransNode currentNode = null;
+			
+			if(lit.hasNext())
+				currentNode = lit.next();
+			
+			boolean added = false;
+			while(currentNode.getColIndex() < node.getColIndex())
 			{
-				i++;
-			}*/
-			for(TransNode tmpNode:row)
-			{
-				if(node.getColIndex() > tmpNode.getColIndex())
-					i++;
-				else
+				if(lit.hasNext())
+					currentNode = lit.next();
+				else//加在末尾
+				{
+					lit.add(node);
+					added = true;
 					break;
+				}
+			}
+			if(!added)
+			{
+				if(currentNode.getColIndex() == node.getColIndex())
+					throw new IndexOutOfBoundsException("insertion has encountered a conflict.");
+				currentNode = lit.previous();
+				lit.add(node);
 			}
 			
-			if (i == length)
-			{
-				row.add(node);
-			}
-			else
-			{
-				row.add(i, node);
-			}
-		}
-		else
-		// 新行
+		} 
+		else// 新行
 		{
 			LinkedList<TransNode> newRow = new LinkedList<TransNode>();
 			newRow.add(node);
@@ -208,36 +211,35 @@ public class TransitiveMatrix implements Serializable
 
 		// 插入列
 		if (cols.containsKey(node.getColIndex()))// 旧列
-		{
-			int i = 0;
-			LinkedList<TransNode> col = cols.get(node.getColIndex());
-			int length = col.size();
-			// 找到对应的index
-/*			while (i < length && node.getRowIndex() > col.get(i).getRowIndex())
-			{
-				i++;
-			}*/
+		{			
+			ListIterator<TransNode> lit = cols.get(node.getColIndex()).listIterator();
 			
-			for(TransNode tmpNode:col)
+			TransNode currentNode = null;
+			
+			if(lit.hasNext())
+				currentNode = lit.next();
+			
+			boolean added = false;
+			while(currentNode.getRowIndex() < node.getRowIndex())
 			{
-				if(node.getRowIndex() > tmpNode.getRowIndex())
-					i++;
-				else
+				if(lit.hasNext())
+					currentNode = lit.next();
+				else//加在末尾
+				{
+					lit.add(node);
+					added = true;
 					break;
+				}
 			}
-			
-			// 插入
-			if (i == length)
+			if(!added)
 			{
-				col.add(node);
+				if(currentNode.getRowIndex() == node.getRowIndex())
+					throw new IndexOutOfBoundsException("insertion has encountered a conflict.");
+				currentNode = lit.previous();
+				lit.add(node);
 			}
-			else
-			{
-				col.add(i, node);
-			}
-		}
-		else
-		// 新列
+		} 
+		else// 新列		
 		{
 			LinkedList<TransNode> newCol = new LinkedList<TransNode>();
 			newCol.add(node);
@@ -253,8 +255,7 @@ public class TransitiveMatrix implements Serializable
 		TransitiveMatrix trans = new TransitiveMatrix(this.colDim, this.rowDim);
 		String[] tmp = matrixName.split("-");
 		trans.setMatrixName(tmp[1] + "-" + tmp[0]);
-		
-		
+
 		// 重新构造整个矩阵
 		for (int i : this.rows.keySet())
 		{
@@ -282,53 +283,111 @@ public class TransitiveMatrix implements Serializable
 		}
 
 		TransitiveMatrix C = new TransitiveMatrix(this.rowDim, B.getColDim());
-		C.setMatrixName(matrixName.split("-")[0] + "-" + B.getMatrixName().split("-")[1]);
+		C.setMatrixName(matrixName.split("-")[0] + "-"
+				+ B.getMatrixName().split("-")[1]);
 
-		//test
+		// test
 		double i = 1;
-		int j = 0;	
-		
+		int j = 1;
 
 		for (LinkedList<TransNode> row : rows.values())
 		{
+			int rowIndex = row.getFirst().getRowIndex();
 			for (LinkedList<TransNode> col : B.getCols().values())
 			{
-				double data = 0;
-				Iterator<TransNode> itB = col.iterator();
-				TransNode Bnode = null;
-				if(itB.hasNext())
-					Bnode = itB.next();
-				
-				for (TransNode Anode : row)
-				{
-					while(itB.hasNext())
-					{					
-						if(Bnode.getRowIndex() >= Anode.getColIndex())
-							break;
-						Bnode = itB.next();
-					}
-					if (Bnode.getRowIndex() == Anode.getColIndex())
-						data += Anode.getData() * Bnode.getData();
-				}
+				int colIndex = col.getFirst().getColIndex();
+				double data = arrayTimes(row, col);
 
 				if (data > deleteLimit)
 				{
-					C.insertOneInstance(row.getFirst().getRowIndex(), col.getFirst()
-							.getColIndex(), data);
+					C.insertOneInstance(rowIndex, colIndex, data);
 				}
 			}
 			
-			if(Math.floor((i*100) / rows.size())==j)
+
+			while( Math.floor(i/(double)rows.size()*100) > j  )
 			{
 				System.out.println(j+"%");
-				j+=10;		
+				j++;
 			}
 			i++;
 		}
 		return C;
 	}
 
-	public TransitiveMatrix normalizedTimes(TransitiveMatrix B)//耗时！
+	private double arrayTimes(LinkedList<TransNode> row,
+			LinkedList<TransNode> col)
+	{
+		double data = 0;
+		Iterator<TransNode> itA = row.iterator();
+		Iterator<TransNode> itB = col.iterator();
+		TransNode Anode = null, Bnode = null;
+		Anode = itA.next();
+
+		Bnode = itB.next();
+		boolean changed = true;
+		while (changed)
+		{
+			changed = false;
+			if (Anode.getColIndex() < Bnode.getRowIndex())
+			{
+				if(itA.hasNext())
+				{
+					Anode = itA.next();
+					changed = true;
+				}
+				else
+					break;
+			}
+			else if (Anode.getColIndex() > Bnode.getRowIndex())
+			{
+				if(itB.hasNext())
+				{
+					Bnode = itB.next();
+					changed = true;
+				}
+				else
+					break;
+			}
+			else
+			{
+				data += Anode.getData() * Bnode.getData();
+				if (itA.hasNext())
+				{
+					Anode = itA.next();
+					changed = true;
+				}
+				else
+					break;
+
+				if (itB.hasNext())
+				{
+					Bnode = itB.next();
+					changed = true;
+				}
+				else
+					break;
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return data;
+	}
+
+	public TransitiveMatrix normalizedTimes(TransitiveMatrix B)// 耗时！
 	{
 		long start = System.currentTimeMillis();
 		if (this.colDim != B.getRowDim())
@@ -358,38 +417,37 @@ public class TransitiveMatrix implements Serializable
 			}
 			rightColLength.put(colIndex, Math.sqrt(length));
 		}
-		
-		
-		//构造normalized matrix
-		TransitiveMatrix tmpA = new TransitiveMatrix(this.rowDim,this.colDim);
+
+		// 构造normalized matrix
+		TransitiveMatrix tmpA = new TransitiveMatrix(this.rowDim, this.colDim);
 		tmpA.setMatrixName(matrixName);
-		TransitiveMatrix tmpB = new TransitiveMatrix(B.rowDim,B.colDim);
+		TransitiveMatrix tmpB = new TransitiveMatrix(B.rowDim, B.colDim);
 		tmpB.setMatrixName(B.getMatrixName());
-		
+
 		for (Integer rowIndex : this.getRows().keySet())
 		{
 			double length = leftRowLength.get(rowIndex);
 			for (TransNode node : this.getRows().get(rowIndex))
 			{
 				TransNode newNode = new TransNode(node.getRowIndex(),
-						node.getColIndex(), node.getData()/length);
+						node.getColIndex(), node.getData() / length);
 				tmpA.insertOneInstance(newNode);
 			}
 		}
-		
+
 		for (Integer colIndex : B.getCols().keySet())
 		{
 			double length = rightColLength.get(colIndex);
 			for (TransNode node : B.getCols().get(colIndex))
 			{
 				TransNode newNode = new TransNode(node.getRowIndex(),
-						node.getColIndex(), node.getData()/length);
+						node.getColIndex(), node.getData() / length);
 				tmpB.insertOneInstance(newNode);
 			}
 		}
 		long mid = System.currentTimeMillis();
-		System.out.println("construct norm in "+(mid-start)/1000 +"s");
-		
+		System.out.println("construct norm in " + (mid - start) / 1000 + "s");
+
 		return tmpA.times(tmpB);
 	}
 
@@ -398,11 +456,12 @@ public class TransitiveMatrix implements Serializable
 		return rows.toString();
 	}
 
-	public TransitiveMatrix trim(int size)//应该有方法可以优化，现在实现方法：完全一个个TranNode重新添加
+	public TransitiveMatrix trim(int size)// 应该有方法可以优化，现在实现方法：完全一个个TranNode重新添加
 	{
-		TransitiveMatrix resultMat = new TransitiveMatrix(this.rowDim,this.colDim);
+		TransitiveMatrix resultMat = new TransitiveMatrix(this.rowDim,
+				this.colDim);
 		resultMat.setMatrixName(matrixName);
-		
+
 		Comparator<TransNode> c = new Comparator<TransNode>()
 		{
 			@Override
@@ -418,28 +477,27 @@ public class TransitiveMatrix implements Serializable
 					return 0;
 			}
 		};
-		
-		
+
 		LinkedList<TransNode> tmpRow = new LinkedList<TransNode>();
-		
-		for(LinkedList<TransNode> row : rows.values())
+
+		for (LinkedList<TransNode> row : rows.values())
 		{
 			tmpRow.clear();
 			tmpRow.addAll(row);
 			Collections.sort(tmpRow, c);
-			
+
 			int maxIndex = Math.min(tmpRow.size(), size);
 			int i = 0;
-			for (TransNode tmpNode: tmpRow)
+			for (TransNode tmpNode : tmpRow)
 			{
-				if(i < maxIndex)
+				if (i < maxIndex)
 					resultMat.insertOneInstance(tmpNode);
 				else
 					break;
 				i++;
 			}
 		}
-		
+
 		return resultMat;
 	}
 
@@ -447,55 +505,61 @@ public class TransitiveMatrix implements Serializable
 	{
 		int rowTotalDegree = 0;
 		int rowNumber = 0;
-		for(LinkedList<TransNode> row : rows.values())
+		for (LinkedList<TransNode> row : rows.values())
 		{
 			rowTotalDegree += row.size();
 			rowNumber++;
 		}
-		rowAvgOutDegree = Math.round((float)rowTotalDegree/(float)rowNumber);
-		
+		rowAvgOutDegree = Math
+				.round((float) rowTotalDegree / (float) rowNumber);
+
 		int colTotalDegree = 0;
 		int colNumber = 0;
-		for(LinkedList<TransNode> col : cols.values())
+		for (LinkedList<TransNode> col : cols.values())
 		{
 			colTotalDegree += col.size();
 			colNumber++;
 		}
-		colAvgInDegree = Math.round((float)colTotalDegree/(float)colNumber);
+		colAvgInDegree = Math.round((float) colTotalDegree / (float) colNumber);
 	}
-	
-	private TransNode isExist(TransitiveMatrix mat,int row,int col)
+
+	private TransNode isExist(TransitiveMatrix mat, int row, int col)
 	{
 		Integer rowInt = new Integer(row);
-		if(!mat.rows.containsKey(rowInt))
+		if (!mat.rows.containsKey(rowInt))
 			return null;
-		for(TransNode tNode : mat.rows.get(rowInt))
-			if(tNode.getColIndex() == col)
+		for (TransNode tNode : mat.rows.get(rowInt))
+			if (tNode.getColIndex() == col)
 				return tNode;
 		return null;
 	}
-	
-	public TransitiveMatrix weightedPlus(ArrayList<TransitiveMatrix> mats, ArrayList<Double> weights)
+
+	public TransitiveMatrix weightedPlus(ArrayList<TransitiveMatrix> mats,
+			ArrayList<Double> weights)
 	{
-		//累加矩阵tmpAdd
-		TransitiveMatrix tmpAdd = new TransitiveMatrix(mats.get(0).getRowDim(),mats.get(0).getColDim());
-		tmpAdd.setMatrixName( mats.get(0).getMatrixName() );
-		
-		for(int i = 0;i < mats.size();i++)	
+		// 累加矩阵tmpAdd
+		TransitiveMatrix tmpAdd = new TransitiveMatrix(mats.get(0).getRowDim(),
+				mats.get(0).getColDim());
+		tmpAdd.setMatrixName(mats.get(0).getMatrixName());
+
+		for (int i = 0; i < mats.size(); i++)
 		{
 			TransitiveMatrix mat = mats.get(i);
-			for(Integer rowIndex : mat.rows.keySet())
+			for (Integer rowIndex : mat.rows.keySet())
 			{
-				for(TransNode tNode : mat.rows.get(rowIndex))
+				for (TransNode tNode : mat.rows.get(rowIndex))
 				{
-					TransNode tmpNode = isExist(tmpAdd,tNode.getRowIndex(),tNode.getColIndex());
-					if(tmpNode == null)
+					TransNode tmpNode = isExist(tmpAdd, tNode.getRowIndex(),
+							tNode.getColIndex());
+					if (tmpNode == null)
 					{
-							tmpNode = new TransNode(tNode.getRowIndex(),tNode.getColIndex(),tNode.getData()*weights.get(i));
-							tmpAdd.insertOneInstance(tmpNode);					
-					}
-					else
-						tmpNode.setData(tmpNode.getData() + tNode.getData()*weights.get(i));
+						tmpNode = new TransNode(tNode.getRowIndex(),
+								tNode.getColIndex(), tNode.getData()
+										* weights.get(i));
+						tmpAdd.insertOneInstance(tmpNode);
+					} else
+						tmpNode.setData(tmpNode.getData() + tNode.getData()
+								* weights.get(i));
 				}
 			}
 		}

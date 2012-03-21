@@ -138,7 +138,7 @@ public abstract class LoadData
 		for (String relationName : relations.keySet())
 		{
 			// 对于每个relation,要添加两个transMat
-			System.out.println("transforming " + relationName);
+//			System.out.println("transforming " + relationName);
 			
 			TransitiveMatrix newTransMat = new TransitiveMatrix(relations.get(relationName));
 			newTransMat.setMatrixName(relationName);
