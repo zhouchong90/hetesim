@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * this class defines sparse matrix AdjMatrix of two Types. 
@@ -74,26 +75,31 @@ public class AdjMatrix {
 		//插入行
 		if(rows.containsKey(node.getRowIndex()))//旧行
 		{
-			int i = 0;
-			LinkedList<AdjNode> row = rows.get(node.getRowIndex()); 
-			int length = row.size();
+			ListIterator<AdjNode> lit = rows.get(node.getRowIndex()).listIterator();
+
+			AdjNode currentNode = null;
 			
-			for(AdjNode tmpNode:row)
+			if(lit.hasNext())
+				currentNode = lit.next();
+			
+			boolean added = false;
+			while(currentNode.getColIndex() < node.getColIndex())
 			{
-				if(node.getColIndex() > tmpNode.getColIndex())
-					i++;
-				else
+				if(lit.hasNext())
+					currentNode = lit.next();
+				else//加在末尾
+				{
+					lit.add(node);
+					added = true;
 					break;
+				}
 			}
-			
-			//插入
-			if(i == length)
+			if(!added)
 			{
-				row.add(node);
-			}
-			else
-			{
-				row.add(i, node);
+				if(currentNode.getColIndex() == node.getColIndex())
+					throw new IndexOutOfBoundsException("insertion has encountered a conflict.");
+				currentNode = lit.previous();
+				lit.add(node);
 			}
 		}
 		else//新行
@@ -106,26 +112,31 @@ public class AdjMatrix {
 		//插入列
 		if(cols.containsKey(node.getColIndex()))//旧列
 		{
-			int i = 0;
-			LinkedList<AdjNode> col = cols.get(node.getColIndex()); 
-			int length = col.size();
-			//找到对应的index
-			for(AdjNode tmpNode:col)
-			{
-				if(node.getRowIndex() > tmpNode.getRowIndex())
-					i++;
-				else
-					break;
-			}
+ListIterator<AdjNode> lit = cols.get(node.getColIndex()).listIterator();
 			
-			//插入
-			if(i == length)
+			AdjNode currentNode = null;
+			
+			if(lit.hasNext())
+				currentNode = lit.next();
+			
+			boolean added = false;
+			while(currentNode.getRowIndex() < node.getRowIndex())
 			{
-				col.add(node);
+				if(lit.hasNext())
+					currentNode = lit.next();
+				else//加在末尾
+				{
+					lit.add(node);
+					added = true;
+					break;
+				}
 			}
-			else
+			if(!added)
 			{
-				col.add(i, node);
+				if(currentNode.getRowIndex() == node.getRowIndex())
+					throw new IndexOutOfBoundsException("insertion has encountered a conflict.");
+				currentNode = lit.previous();
+				lit.add(node);
 			}
 		}
 		else//新列

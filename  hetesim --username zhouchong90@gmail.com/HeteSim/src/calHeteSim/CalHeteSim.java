@@ -41,7 +41,7 @@ public class CalHeteSim
 	 */
 	public CalHeteSim(Data data, String HeteSimPath)
 	{
-		tmpMat = null;
+		tmpMat = new HashMap<String, TransitiveMatrix>();
 		this.data = data;
 		this.HeteSimPath = HeteSimPath;
 		dealSelf();
@@ -176,7 +176,7 @@ public class CalHeteSim
 		TransitiveMatrix leftTransMat = computeMultiple(leftPath, left1TransMat);
 
 		long mid = System.currentTimeMillis();
-		System.out.println("left done in:" + (mid - start) / 1000 + "s");
+//		System.out.println("left done in:" + (mid - start) / 1000 + "s");
 
 		TransitiveMatrix rightTransMat;
 		if (leftPath.equals(rightPath))
@@ -186,11 +186,12 @@ public class CalHeteSim
 		else
 		{
 
-			rightTransMat = computeMultiple(rightPath, right1TransMat)
-					.transpose();
+			TransitiveMatrix Rtmp= computeMultiple(rightPath, right1TransMat);
+			rightTransMat = Rtmp.transpose();
+					
 		}
-		System.out.println("right done in:"
-				+ (System.currentTimeMillis() - mid) / 1000 + "s");
+//		System.out.println("right done in:"
+//				+ (System.currentTimeMillis() - mid) / 1000 + "s");
 
 		// normalize, 计算cos值
 		return leftTransMat.normalizedTimes(rightTransMat);
@@ -211,7 +212,6 @@ public class CalHeteSim
 			return decom.decomposeEven(HeteSimPath);
 		else
 		{
-			tmpMat = new HashMap<String, TransitiveMatrix>();
 			return decom.decomposeOdd(data, path, tmpMat);
 		}
 	}
@@ -243,31 +243,30 @@ public class CalHeteSim
 		while (list.size() > 1)// 只有一个，不用乘
 		{
 			TransitiveMatrix result;
-			int minSize = Integer.MAX_VALUE;
+			long minSize = Long.MAX_VALUE;
 			int i = 0;
 			int minIndex = 0;// the best choice is at minIndex and minIndex+1
 
 			for (; i < list.size() - 1; i++)// 找到最小矩阵的位置
 			{
-				int size = list.get(i).getRows().size()
-						* list.get(i).getCols().size()
-						* list.get(i + 1).getCols().size();
+				long size = (long)list.get(i).getRows().size()//有问题！
+						* (long)list.get(i).getCols().size()
+						* (long)list.get(i + 1).getCols().size();
 
 				if (size < minSize)
-					;
 				{
 					minSize = size;
 					minIndex = i;
 				}
 			}
 
-			System.out.println("Calculating " + list.get(minIndex).getMatrixName()+"*"+list.get(minIndex + 1).getMatrixName());
+//			System.out.println("Calculating " + list.get(minIndex).getMatrixName()+"*"+list.get(minIndex + 1).getMatrixName());
 			long start = System.currentTimeMillis();
 			
 			result = list.get(minIndex).times(list.get(minIndex + 1));// 计算结果
 			
-			System.out.println("Multiplication done in:"
-					+ (System.currentTimeMillis()-start)/1000);
+//			System.out.println("Multiplication done in:"
+//					+ (System.currentTimeMillis()-start)/1000);
 
 			// 调整链表
 

@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src" />
-	<classpathentry kind="con"
-		path="org.eclipse.jdt.launching.JRE_CONTAINER" />
-	<classpathentry kind="lib"
-		path="lib/com.ibm.icu_4.4.2.v20110208.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.core.commands_3.6.0.I20110111-0800.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.core.runtime_3.7.0.v20110110.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.equinox.common_3.6.0.v20110523.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.jface_3.7.0.I20110522-1430.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.jface.text_3.7.1.r371_v20110825-0800.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.osgi_3.7.1.R37x_v20110808-1106.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.text_3.5.101.r371_v20110810-0800.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.ui.forms_3.5.100.v20110425.jar" />
-	<classpathentry kind="lib"
-		path="lib/org.eclipse.ui.workbench_3.7.0.I20110519-0100.jar" />
-	<classpathentry kind="lib" path="lib/swt.jar" />
-	<classpathentry kind="output" path="bin" />
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/com.ibm.icu_4.4.2.v20110208.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.commands_3.6.0.I20110111-0800.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime_3.7.0.v20110110.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common_3.6.0.v20110523.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jface_3.7.0.I20110522-1430.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jface.text_3.7.1.r371_v20110825-0800.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.osgi_3.7.1.R37x_v20110808-1106.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.text_3.5.101.r371_v20110810-0800.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.ui.forms_3.5.100.v20110425.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.ui.workbench_3.7.0.I20110519-0100.jar"/>
+	<classpathentry kind="lib" path="lib/swt.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

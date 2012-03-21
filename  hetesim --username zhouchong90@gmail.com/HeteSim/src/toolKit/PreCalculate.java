@@ -65,7 +65,7 @@ public class PreCalculate {
 			for(int j = low;j <= high;j ++)
 				nextPath(i,1,j,path,posiPaths);
 		}
-		System.out.println("All posiPaths caled.");
+//		System.out.println("All posiPaths caled.");
 		return posiPaths;
 	}
 	
@@ -87,9 +87,9 @@ public class PreCalculate {
 				posiPathsFilter.add(ch);
 		}
 		
-		System.out.println("All posiPaths caled.");
-		System.out.print("They are:");
-		System.out.println(posiPathsFilter);
+//		System.out.println("All posiPaths caled.");
+//		System.out.print("They are:");
+//		System.out.println(posiPathsFilter);
 		
 		return posiPathsFilter;
 	}
@@ -164,7 +164,7 @@ public class PreCalculate {
 			System.out.println("Calculating:"+path);
 			QuickHeteSim qhs = new QuickHeteSim();
 			qhs.preCalPosMat(data, modelPath,path);
-			System.out.println(path + " done in:"+System.currentTimeMillis());
+//			System.out.println(path + " done in:"+System.currentTimeMillis());
 		}	
 	}
 	
