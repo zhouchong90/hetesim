@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import FastMatComputation.MatChainMult;
+
 import model.Data;
 import model.TransitiveMatrix;
 
@@ -135,8 +137,8 @@ public class CalHeteSim
 
 		// 计算乘积
 		TransitiveMatrix leftTransMat = computeMultiple(leftPath, left1TransMat);
-		TransitiveMatrix rightTransMat = computeMultiple(rightPath,
-				right1TransMat).transpose();
+		TransitiveMatrix tmpRMat = computeMultiple(rightPath,right1TransMat);
+		TransitiveMatrix rightTransMat = tmpRMat.transpose();
 
 		// normalize, 计算cos值
 		return leftTransMat.normalizedTimes(rightTransMat);
@@ -168,33 +170,36 @@ public class CalHeteSim
 		}
 
 		// 获取左右两个posMat(沿着path一路乘过来的乘积)
-		TransitiveMatrix left1TransMat = data.getTransMat(leftPath.get(0));
-		TransitiveMatrix right1TransMat = data.getTransMat(rightPath.get(0));
-
-		long start = System.currentTimeMillis();
-		// 计算乘积
-		TransitiveMatrix leftTransMat = computeMultiple(leftPath, left1TransMat);
-
-		long mid = System.currentTimeMillis();
-//		System.out.println("left done in:" + (mid - start) / 1000 + "s");
-
-		TransitiveMatrix rightTransMat;
-		if (leftPath.equals(rightPath))
-		{
-			rightTransMat = leftTransMat.transpose();
-		}
-		else
-		{
-
-			TransitiveMatrix Rtmp= computeMultiple(rightPath, right1TransMat);
-			rightTransMat = Rtmp.transpose();
-					
-		}
-//		System.out.println("right done in:"
-//				+ (System.currentTimeMillis() - mid) / 1000 + "s");
-
-		// normalize, 计算cos值
-		return leftTransMat.normalizedTimes(rightTransMat);
+//		TransitiveMatrix left1TransMat = data.getTransMat(leftPath.get(0));
+//		TransitiveMatrix right1TransMat = data.getTransMat(rightPath.get(0));
+//
+//		long start = System.currentTimeMillis();
+//		// 计算乘积
+//		TransitiveMatrix leftTransMat = computeMultiple(leftPath, left1TransMat);
+//
+//		long mid = System.currentTimeMillis();
+////		System.out.println("left done in:" + (mid - start) / 1000 + "s");
+//
+//		TransitiveMatrix rightTransMat;
+//		if (leftPath.equals(rightPath))
+//		{
+//			rightTransMat = leftTransMat.transpose();
+//		}
+//		else
+//		{
+//
+//			TransitiveMatrix Rtmp= computeMultiple(rightPath, right1TransMat);
+//			rightTransMat = Rtmp.transpose();
+//					
+//		}
+////		System.out.println("right done in:"
+////				+ (System.currentTimeMillis() - mid) / 1000 + "s");
+//
+//		// normalize, 计算cos值
+//		return leftTransMat.normalizedTimes(rightTransMat);
+		
+		MatChainMult mcm = new MatChainMult(data,leftPath,rightPath,tmpMat);
+		return mcm.quickMult();
 	}
 
 	/**

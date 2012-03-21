@@ -257,12 +257,11 @@ public class TransitiveMatrix implements Serializable
 		trans.setMatrixName(tmp[1] + "-" + tmp[0]);
 
 		// 重新构造整个矩阵
-		for (int i : this.rows.keySet())
+		for (LinkedList<TransNode> row: this.rows.values())
 		{
-			for (TransNode a : rows.get(i))
+			for (TransNode a : row)
 			{
-				TransNode newNode = new TransNode(a.getColIndex(),
-						a.getRowIndex(), a.getData());
+				TransNode newNode = new TransNode(a.getColIndex(), a.getRowIndex(), a.getData());
 				trans.insertOneInstance(newNode);
 			}
 		}
@@ -283,8 +282,8 @@ public class TransitiveMatrix implements Serializable
 		}
 
 		TransitiveMatrix C = new TransitiveMatrix(this.rowDim, B.getColDim());
-		C.setMatrixName(matrixName.split("-")[0] + "-"
-				+ B.getMatrixName().split("-")[1]);
+		String[] tmp = B.getMatrixName().split("-");
+		C.setMatrixName(matrixName.split("-")[0] + "-" + tmp[tmp.length-1]);
 
 		// test
 		double i = 1;
@@ -429,9 +428,7 @@ public class TransitiveMatrix implements Serializable
 			double length = leftRowLength.get(rowIndex);
 			for (TransNode node : this.getRows().get(rowIndex))
 			{
-				TransNode newNode = new TransNode(node.getRowIndex(),
-						node.getColIndex(), node.getData() / length);
-				tmpA.insertOneInstance(newNode);
+				node.setData( node.getData() / length );
 			}
 		}
 
@@ -440,15 +437,13 @@ public class TransitiveMatrix implements Serializable
 			double length = rightColLength.get(colIndex);
 			for (TransNode node : B.getCols().get(colIndex))
 			{
-				TransNode newNode = new TransNode(node.getRowIndex(),
-						node.getColIndex(), node.getData() / length);
-				tmpB.insertOneInstance(newNode);
+				node.setData( node.getData()/length );
 			}
 		}
 		long mid = System.currentTimeMillis();
 		System.out.println("construct norm in " + (mid - start) / 1000 + "s");
 
-		return tmpA.times(tmpB);
+		return this.times(B);
 	}
 
 	public String toString()

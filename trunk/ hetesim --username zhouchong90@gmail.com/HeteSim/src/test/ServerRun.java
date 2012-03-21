@@ -8,7 +8,7 @@ import toolKit.AllWeightedTransMats;
 import toolKit.PreCalculate;
 
 import model.Data;
-import io.LoadTxt;
+import io.LoadTxtFromFile;
 
 public class ServerRun
 {
@@ -25,7 +25,7 @@ public class ServerRun
 		System.out.println("start");
 		long start = System.currentTimeMillis();
 		
-		LoadTxt ld = new LoadTxt(args[0]);
+		LoadTxtFromFile ld = new LoadTxtFromFile(args[0]);
 		Data data = ld.run();		
 		
 		long dataloaded = System.currentTimeMillis();
