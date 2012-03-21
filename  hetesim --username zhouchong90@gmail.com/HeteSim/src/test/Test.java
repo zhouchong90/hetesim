@@ -11,7 +11,7 @@ import model.AdjMatrix;
 import model.Data;
 import model.TransitiveMatrix;
 import io.LoadData;
-import io.LoadTxt;
+import io.LoadTxtFromFile;
 import calHeteSim.QuickHeteSim;
 import calHeteSim.CalHeteSim;
 import calHeteSim.Decompose;
@@ -25,7 +25,7 @@ public class Test {
 		System.out.println("start");
 		long start = System.currentTimeMillis();
 		
-		LoadTxt ld = new LoadTxt("C:/HeteSim/MovieData");
+		LoadTxtFromFile ld = new LoadTxtFromFile("C:/HeteSim/testData");
 		Data data = ld.run();		
 		
 //		Data data = Data.loadData("C:/HeteSim/MovieData.dat");
@@ -71,8 +71,9 @@ public class Test {
 		//wtm.weightedMats.put("C-A", wtm.calWeightedMat(paths,qhs));		
 		//System.out.println("all done in:"+(System.currentTimeMillis()-mid)/1000+"s");
 		
-		CalHeteSim chs = new CalHeteSim(data, "A,M,A,M,A");
-		chs.getHeteSim();
+		CalHeteSim chs = new CalHeteSim(data, "T,M,T,M,T,M,S,M,S,M");
+		TransitiveMatrix tm = chs.getHeteSim();
 		System.out.println("done in:"+(System.currentTimeMillis()-mid)/1000 +"s");
+		System.out.println(tm);
 	}
 }

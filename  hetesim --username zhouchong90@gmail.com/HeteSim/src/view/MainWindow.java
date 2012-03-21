@@ -1,6 +1,6 @@
 package view;
 
-import io.LoadTxt;
+import io.LoadTxtFromFile;
 
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -599,7 +599,7 @@ public class MainWindow
 
 		entityList.removeAll();
 		relationList.removeAll();
-		LoadTxt txt = new LoadTxt(srcFilePath);// 从文件中读取出数据,
+		LoadTxtFromFile txt = new LoadTxtFromFile(srcFilePath);// 从文件中读取出数据,
 												// 并且构造data对象并赋值
 		data = txt.run();
 		for (String entity : data.getEntities().keySet())
